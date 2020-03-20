@@ -6,10 +6,15 @@ namespace Klimatobservationer.Classes
 {
     class Measurement
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
         public double Value { get; set; }
         public int Observation_id { get; set; }
         public int Category_id { get; set; }
+        public string Name { get; set; }
+        public override string ToString()
+        {
+            return $"{Id}. {Name} Value: {Value}";
+        }
 
     }
 }

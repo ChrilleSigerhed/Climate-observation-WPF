@@ -160,12 +160,14 @@ namespace Klimatobservationer.Repository
             }
 
         }
-        public static Measurement GetMeasurement(int id)
+        public static IEnumerable<Measurement> GetMeasurement(int id)
         {
-            string stmt = "select id, value, observer_id, category_id from measurement where id=@id";
+            string stmt = "SELECT measurement.id, value, category.name, measurement.observation_id from measurement inner join category on category_id = category.id  where observation_id = @id";
+            //string stmt = "select id, value, observation_id, category_id from measurement where observation_id=@id";
             using (var conn = new NpgsqlConnection(connectionString))
             {
                 Measurement measurement = null;
+                List<Measurement> measurements = new List<Measurement>();
                 conn.Open();
                 using (var command = new NpgsqlCommand(stmt, conn))
                 {
@@ -176,15 +178,16 @@ namespace Klimatobservationer.Repository
                         {
                             measurement = new Measurement
                             {
-                                ID = id,
-                                Observation_id = (int)reader["id"],
-                                Category_id = (int)reader["category_id"],
-                                Value = (double)reader["value"],
+                                Id = (int)reader["id"],
+                                Name = (string)reader["name"],
+                                Value = (reader["value"] as double?).GetValueOrDefault(),
+                                Observation_id = (int)reader["observation_id"]
                             };
+                            measurements.Add(measurement);
                         }
                     }
                 }
-                return measurement;
+                return measurements;
             }
         }
         public static IEnumerable<Observer> GetDeletebleObservers()
@@ -276,7 +279,35 @@ namespace Klimatobservationer.Repository
 
         #endregion
         #region UPDATE
-        
+        public static void UpdateMeasurement(int id, double value)
+        {
+            string stmt = "UPDATE measurement SET value = @value WHERE id=@id; ";
+            using (var conn = new NpgsqlConnection(connectionString))
+            {
+                conn.Open();
+                using (var trans = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        using (var command = new NpgsqlCommand(stmt, conn))
+                        {
+                            command.Parameters.AddWithValue("id", id);
+                            command.Parameters.AddWithValue("value", value);
+                            command.Prepare();
+                            command.ExecuteScalar();
+                        }
+                        trans.Commit();
+                    }
+                    catch (PostgresException ex)
+                    {
+                        trans.Rollback();
+                        throw;
+                    }
+
+                }
+            }
+
+        }
 
         #endregion
         #region DELETE
@@ -311,6 +342,20 @@ namespace Klimatobservationer.Repository
         public static void DeleteObservation(int id)
         {
             string stmt = "DELETE FROM observation WHERE id=@id";
+            using (var conn = new NpgsqlConnection(connectionString))
+            {
+                conn.Open();
+                using (var command = new NpgsqlCommand(stmt, conn))
+                {
+                    command.Parameters.AddWithValue("id", id);
+                    command.Prepare();
+                    command.ExecuteScalar();
+                }
+            }
+        }
+        public static void DeleteMeasurement(int id)
+        {
+            string stmt = "DELETE FROM measurement WHERE id=@id";
             using (var conn = new NpgsqlConnection(connectionString))
             {
                 conn.Open();
