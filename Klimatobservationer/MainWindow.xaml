@@ -5,18 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Klimatobservationer"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Button Content="Add Observer" HorizontalAlignment="Left" Margin="172,154,0,0" VerticalAlignment="Top" Click="Button_Click"/>
-        <TextBox x:Name="txtFirstname" HorizontalAlignment="Left" Margin="172,89,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" />
-        <TextBox x:Name="txtLastname" HorizontalAlignment="Left" Margin="172,125,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Label Content="Firstname" HorizontalAlignment="Left" Margin="169,67,0,0" VerticalAlignment="Top"/>
-        <Label Content="Lastname" HorizontalAlignment="Left" Margin="170,103,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtId"  HorizontalAlignment="Left" Margin="350,89,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="33" />
-        <Label Content="ID" HorizontalAlignment="Left" Margin="352,67,0,0" VerticalAlignment="Top"/>
-        <Button Content="Remove ID" HorizontalAlignment="Left" Margin="339,109,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
-        <ListBox x:Name="listNames" Margin="635,10,0,177"/>
-        <Button Content="Hämta Observers" HorizontalAlignment="Left" Margin="635,262,0,0" VerticalAlignment="Top" Click="Button_Click_2"/>
-
+        Title="MainWindow" Height="450" Width="1250">
+    <Grid RenderTransformOrigin="0.015,0.017" Margin="0,0,0,6">
+        <Button Content="Add Observer" HorizontalAlignment="Left" Margin="74,94,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+        <TextBox x:Name="txtFirstname" HorizontalAlignment="Left" Margin="74,29,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" />
+        <TextBox x:Name="txtLastname" HorizontalAlignment="Left" Margin="74,65,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Firstname" HorizontalAlignment="Left" Margin="71,7,0,0" VerticalAlignment="Top"/>
+        <Label Content="Lastname" HorizontalAlignment="Left" Margin="72,43,0,0" VerticalAlignment="Top"/>
+        <Button Content="Remove Observer" HorizontalAlignment="Left" Margin="37,150,0,0" VerticalAlignment="Top" Click="Button_Click_1" Width="164"/>
+        <ListBox x:Name="listNames" Margin="207,4,829,183"/>
+        <TextBox x:Name="txtError" HorizontalAlignment="Left" Margin="37,175,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165" Height="76" BorderThickness="0,0,0,0" FontWeight="Bold"/>
+        <Button Content="Show observers without observations" HorizontalAlignment="Left" Margin="208,259,0,0" VerticalAlignment="Top" Click="Button_Click_2" Width="213" Height="31"/>
+        <ListBox x:Name="listObservation" Margin="437,4,648,183"/>
+        <Button x:Name="btnShowObs" Content="Show observers observations" HorizontalAlignment="Left" Margin="437,259,0,0" VerticalAlignment="Top" Width="165" Click="Button_Click_3" Height="31"/>
+        <Button Content="Remove Observation" HorizontalAlignment="Left" Margin="437,298,0,0" VerticalAlignment="Top" Height="34" Width="165" Click="Button_Click_4"/>
+        <ListBox x:Name="listAddObservation" Margin="618,4,470,183" SelectionChanged="listAddObservation_SelectionChanged"/>
+        <Button Content="Show Categories" HorizontalAlignment="Left" Margin="618,259,0,0" VerticalAlignment="Top" Width="349" Click="Button_Click_5"/>
+        <ListBox x:Name="listAddWeather" Margin="805,7,283,183" SelectionChanged="listAddWeather_SelectionChanged"/>
+        <Button Content="Add Observation" HorizontalAlignment="Left" Margin="735,338,0,0" VerticalAlignment="Top" Width="115" Click="Button_Click_6"/>
+        <TextBox x:Name="txtSnowdepth" HorizontalAlignment="Left" Margin="859,315,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="txtAnimal" HorizontalAlignment="Left" Margin="625,315,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Ange antal" HorizontalAlignment="Left" Margin="625,289,0,0" VerticalAlignment="Top"/>
+        <Label Content="Ange ett värde" HorizontalAlignment="Left" Margin="859,289,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelLeft" Content="" HorizontalAlignment="Left" Margin="750,311,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelRight" Content="" HorizontalAlignment="Left" Margin="984,311,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>
