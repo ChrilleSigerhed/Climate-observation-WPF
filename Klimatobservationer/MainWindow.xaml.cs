@@ -25,11 +25,13 @@ namespace Klimatobservationer
     public partial class MainWindow : Window
     {
         Category[] finalCategory = new Category[2];
+        //List<Category> finalCategories = new List<Category>();
+        List<Measurement> measurements  = new List<Measurement>();
         public MainWindow()
         {
             InitializeComponent();
             UpdateList();
-            
+           
           
         }
         public void UpdateObservations()
@@ -110,20 +112,22 @@ namespace Klimatobservationer
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
             var allCategories = GetCategorys();
+            //listAddObservation.ItemsSource = null;
+            //listAddObservation.ItemsSource = allCategories;
             List<Category> categories = new List<Category>();
             List<Category> categoriesweather = new List<Category>();
             foreach (var c in allCategories)
             {
-                if(c.Id <= 2)
+                if (c.Id <= 2)
                 {
                     categories.Add(c);
                 }
-                else if(c.Id == 3)
+                else if (c.Id == 3)
                 {
                     categoriesweather.Add(c);
                 }
             }
-            listAddObservation.ItemsSource = null; 
+            listAddObservation.ItemsSource = null;
             listAddObservation.ItemsSource = categories;
             listAddWeather.ItemsSource = null;
             listAddWeather.ItemsSource = categoriesweather;
@@ -202,49 +206,61 @@ namespace Klimatobservationer
                     Observer_id = observer.Id,
                     Geolocation_id = 7
                 };
+
                 int observation_id = AddObservation(observation);
-                var measurement1 = finalCategory[0];
-                var measurement2 = finalCategory[1];
-                if (measurement1 != null)
+                var category1 = finalCategory[0];
+                var category2 = finalCategory[1];
+                if (category1 != null)
                 {
-                    if(txtAnimal.Text.Length > 0)
+                    if (txtAnimal.Text.Length > 0)
                     {
                         Measurement measurement = new Measurement()
                         {
 
                             Value = double.Parse(txtAnimal.Text),
-                            Observation_id = observation_id,
-                            Category_id = measurement1.Id,
+                            //Observation_id = observation_id,
+                            Category_id = category1.Id,
                         };
-                        AddMeasurement(measurement);
+                        measurements.Add(measurement);
                     }
                     else
                     {
                         MessageBox.Show("Du glömde att fylla i värden");
                     }
                 }
-                if(measurement2 != null)
+                if (category2 != null)
                 {
                     if (txtSnowdepth.Text.Length > 0)
                     {
-                        Measurement measurements = new Measurement()
+                        Measurement measurement1 = new Measurement()
                         {
                             Value = double.Parse(txtSnowdepth.Text),
-                            Observation_id = observation_id,
-                            Category_id = measurement2.Id,
+                            //Observation_id = observation_id,
+                            Category_id = category2.Id,
                         };
-                        AddMeasurement(measurements);
+                        measurements.Add(measurement1);
                     }
-                     else
+                    else
                     {
                         MessageBox.Show("Du glömde att fylla i värden");
                     }
                 }
+                AddMeasurement(observation, measurements);
+                measurements.Clear();
             }
             catch (PostgresException ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void listObservation_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //var measurement = (Observation)listObservation.SelectedItems;
+            //var myMeasurement = GetMeasurement(measurement.Observer_id);
+            //listObservation.ItemsSource = null;
+            //listObservation.ItemsSource = myMeasurement;
+
         }
     }
 }

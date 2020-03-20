@@ -63,9 +63,11 @@ namespace Klimatobservationer.Repository
             }
 
         }
-        public static void AddMeasurement(Measurement measurement)
+        public static void AddMeasurement(Observation observation, List<Measurement> measurement)
         {
+            string stmt1 = "INSERT INTO observation (observer_id, geolocation_id) values(@observer_id, 7) returning id";
             string stmt = "INSERT INTO measurement (observation_id, category_id, value) values(@observation_id, @category_id, @value)";
+            var Id = 0;
             using (var conn = new NpgsqlConnection(connectionString))
             {
                 conn.Open();
@@ -73,13 +75,22 @@ namespace Klimatobservationer.Repository
                 {
                     try
                     {
-                        using (var command = new NpgsqlCommand(stmt, conn))
+                        using (var command = new NpgsqlCommand(stmt1, conn))
                         {
 
-                            command.Parameters.AddWithValue("observation_id", measurement.Observation_id);
-                            command.Parameters.AddWithValue("category_id", measurement.Category_id);
-                            command.Parameters.AddWithValue("value", measurement.Value);
-                            command.ExecuteScalar();
+                            command.Parameters.AddWithValue("observer_id", observation.Observer_id);
+                            Id = (int)command.ExecuteScalar();
+                        }
+                        for (int i = 0; i < measurement.Count; i++)
+                        {
+                            using (var command = new NpgsqlCommand(stmt, conn))
+                            {
+
+                                command.Parameters.AddWithValue("observation_id", Id);
+                                command.Parameters.AddWithValue("category_id", measurement[i].Category_id);
+                                command.Parameters.AddWithValue("value", measurement[i].Value);
+                                command.ExecuteScalar();
+                            }
                         }
                         trans.Commit();
                     }
@@ -148,6 +159,33 @@ namespace Klimatobservationer.Repository
                 return observers;
             }
 
+        }
+        public static Measurement GetMeasurement(int id)
+        {
+            string stmt = "select id, value, observer_id, category_id from measurement where id=@id";
+            using (var conn = new NpgsqlConnection(connectionString))
+            {
+                Measurement measurement = null;
+                conn.Open();
+                using (var command = new NpgsqlCommand(stmt, conn))
+                {
+                    command.Parameters.AddWithValue("id", id);
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            measurement = new Measurement
+                            {
+                                ID = id,
+                                Observation_id = (int)reader["id"],
+                                Category_id = (int)reader["category_id"],
+                                Value = (double)reader["value"],
+                            };
+                        }
+                    }
+                }
+                return measurement;
+            }
         }
         public static IEnumerable<Observer> GetDeletebleObservers()
         {
