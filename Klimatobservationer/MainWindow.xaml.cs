@@ -54,7 +54,7 @@ namespace Klimatobservationer
             listNames.ItemsSource = observers;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Add_Observer(object sender, RoutedEventArgs e)
         {
             var observer = new Observer
             {
@@ -67,7 +67,7 @@ namespace Klimatobservationer
             UpdateList();
         }
 
-        public void Button_Click_1(object sender, RoutedEventArgs e)
+        public void RemoveObserver(object sender, RoutedEventArgs e)
         {
             var observer = (Observer)listNames.SelectedItem;
             try
@@ -87,19 +87,19 @@ namespace Klimatobservationer
            
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private void ShowObserversWithoutObservations(object sender, RoutedEventArgs e)
         {
             var observers = GetDeletebleObservers();
             listNames.ItemsSource = null;
             listNames.ItemsSource = observers;
         }
 
-        private void Button_Click_3(object sender, RoutedEventArgs e)
+        private void Show_Observations(object sender, RoutedEventArgs e)
         {
             UpdateObservations();
         }
 
-        private void Button_Click_4(object sender, RoutedEventArgs e)
+        private void Delete_Observation(object sender, RoutedEventArgs e)
         {
             if (listObservation.SelectedItem is Observation)
             {
@@ -111,7 +111,7 @@ namespace Klimatobservationer
         }
                 
 
-        private void Button_Click_5(object sender, RoutedEventArgs e)
+        private void ShowCategories(object sender, RoutedEventArgs e)
         {
             UppdateCategoryList();
         }
@@ -144,7 +144,7 @@ namespace Klimatobservationer
                 }
             }
         }
-        private void Button_Click_6(object sender, RoutedEventArgs e)
+        private void SubmitObservation(object sender, RoutedEventArgs e)
         {
 
             var observer = (Observer)listNames.SelectedItem;
@@ -165,7 +165,7 @@ namespace Klimatobservationer
                 MessageBox.Show(ex.Message);
             }
         }
-        private void Button_Click_7(object sender, RoutedEventArgs e)
+        private void Update(object sender, RoutedEventArgs e)
         {
             var measurement = (Measurement)listObservation.SelectedItem;
             double Value = double.Parse(txtUpdateValue.Text);
@@ -187,7 +187,7 @@ namespace Klimatobservationer
             }
         }
 
-        private void Button_Click_8(object sender, RoutedEventArgs e)
+        private void Add_Measurement(object sender, RoutedEventArgs e)
         {
             if (finalCategory[0] != null)
             {
@@ -227,12 +227,12 @@ namespace Klimatobservationer
             listAddObservation.ItemsSource = categories;
         }
 
-        private void Button_Click_9(object sender, RoutedEventArgs e)
+        private void ShowAllObservers(object sender, RoutedEventArgs e)
         {
             UpdateList();
         }
 
-        private void Button_Click_10(object sender, RoutedEventArgs e)
+        private void Show_Measurement(object sender, RoutedEventArgs e)
         {
             if (listObservation.SelectedItem is Observation)
             {
@@ -253,7 +253,7 @@ namespace Klimatobservationer
             }
         }
 
-        private void Button_Click_11(object sender, RoutedEventArgs e)
+        private void Delete_Measurment(object sender, RoutedEventArgs e)
         {
             if (listObservation.SelectedItem is Measurement)
             {
